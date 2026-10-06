@@ -7,271 +7,846 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f4f7fb;font-family:Arial;color:#172033}
-.sidebar{position:fixed;width:245px;height:100vh;background:#0b1f3a;color:white;padding:25px 15px}
-.logo{font-size:21px;font-weight:800;padding:0 12px 30px}
-.logo span{color:#38bdf8}
-.nav a{display:block;color:#cbd5e1;padding:13px 15px;margin:5px 0;border-radius:12px;text-decoration:none}
-.nav a:hover,.nav .active{background:#16365f;color:white}
-.main{margin-left:245px;padding:25px;max-width:1200px}
-.card{background:white;border-radius:20px;padding:23px;box-shadow:0 7px 25px #153b6510;margin-bottom:20px}
-.form{display:grid;grid-template-columns:1fr 1fr;gap:17px}
-.full{grid-column:1/-1}
-label{font-size:13px;font-weight:bold;display:block;margin-bottom:7px}
-input,select,textarea{width:100%;padding:13px;border:1px solid #dbe3ec;border-radius:11px;font-size:15px}
-textarea{min-height:90px}
-button{background:#0ea5e9;color:white;border:0;border-radius:11px;padding:14px 20px;font-weight:bold;cursor:pointer}
-.preview{background:#eff6ff;padding:17px;border-radius:14px}
-.big{font-size:24px;font-weight:800}
-table{width:100%;border-collapse:collapse;min-width:850px}
-th,td{padding:13px;border-bottom:1px solid #edf0f5;text-align:left}
-th{font-size:12px;color:#64748b}
-.tableWrap{overflow:auto}
-@media(max-width:700px){.sidebar{width:70px}.logo{font-size:0}.nav a{font-size:0;text-align:center}.main{margin-left:70px;padding:15px}.form{grid-template-columns:1fr}.full{grid-column:auto}}
+
+body{
+margin:0;
+background:#f4f7fb;
+font-family:Arial,sans-serif;
+color:#172033
+}
+
+.sidebar{
+position:fixed;
+width:245px;
+height:100vh;
+background:#0b1f3a;
+color:white;
+padding:25px 15px
+}
+
+.logo{
+font-size:21px;
+font-weight:800;
+padding:0 12px 30px
+}
+
+.logo span{
+color:#38bdf8
+}
+
+.nav a{
+display:block;
+color:#cbd5e1;
+padding:13px 15px;
+margin:5px 0;
+border-radius:12px;
+text-decoration:none
+}
+
+.nav a:hover,
+.nav .active{
+background:#16365f;
+color:white
+}
+
+.main{
+margin-left:245px;
+padding:25px;
+max-width:1200px
+}
+
+.card{
+background:white;
+border-radius:20px;
+padding:23px;
+box-shadow:0 7px 25px #153b6510;
+margin-bottom:20px
+}
+
+.form{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:17px
+}
+
+.full{
+grid-column:1/-1
+}
+
+label{
+font-size:13px;
+font-weight:bold;
+display:block;
+margin-bottom:7px
+}
+
+input,
+select,
+textarea{
+width:100%;
+padding:13px;
+border:1px solid #dbe3ec;
+border-radius:11px;
+font-size:15px
+}
+
+textarea{
+min-height:90px
+}
+
+button{
+background:#0ea5e9;
+color:white;
+border:0;
+border-radius:11px;
+padding:14px 20px;
+font-weight:bold;
+cursor:pointer
+}
+
+.preview{
+background:#eff6ff;
+padding:17px;
+border-radius:14px
+}
+
+.big{
+font-size:24px;
+font-weight:800
+}
+
+.patientInfo{
+background:#f8fafc;
+border:1px solid #e5eaf0;
+padding:15px;
+border-radius:13px;
+display:none
+}
+
+.patientInfo strong{
+color:#0f3b68
+}
+
+.tableWrap{
+overflow:auto
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:700px
+}
+
+th,
+td{
+padding:13px;
+border-bottom:1px solid #edf0f5;
+text-align:left
+}
+
+th{
+font-size:12px;
+color:#64748b
+}
+
+.empty{
+text-align:center;
+color:#64748b;
+padding:25px
+}
+
+@media(max-width:700px){
+
+.sidebar{
+width:70px
+}
+
+.logo{
+font-size:0
+}
+
+.nav a{
+font-size:0;
+text-align:center
+}
+
+.main{
+margin-left:70px;
+padding:15px
+}
+
+.form{
+grid-template-columns:1fr
+}
+
+.full{
+grid-column:auto
+}
+
+}
 </style>
 </head>
 
 <body>
 
 <aside class="sidebar">
-<div class="logo">Tushar's <span>Physio</span></div>
+
+<div class="logo">
+Tushar's <span>Physio</span>
+</div>
+
 <nav class="nav">
+
 <a href="index.html">🏠 Dashboard</a>
+
 <a href="patients.html">👥 Patients</a>
+
 <a href="new-patient.html">➕ New Patient</a>
+
 <a class="active" href="visits.html">🩺 Visits</a>
+
 <a href="finance.html">💰 Finance</a>
+
 <a href="reports.html">📊 Reports</a>
+
 </nav>
+
 </aside>
+
 
 <main class="main">
 
 <h1>Home Visit / Session</h1>
+
 <p>Record treatment, fee and payment.</p>
+
 
 <div class="card">
 
 <form id="visitForm">
 
-<div>
+
+<div class="full">
+
 <label>Patient *</label>
+
 <select id="patient" required>
+
 <option value="">Select Patient</option>
+
 </select>
+
+</div>
+
+
+<!-- Patient information automatically appears -->
+
+<div id="patientInfo" class="full patientInfo">
+
+<div>
+<strong>Patient ID:</strong>
+<span id="infoId"></span>
 </div>
 
 <div>
+<strong>Problem:</strong>
+<span id="infoProblem"></span>
+</div>
+
+<div>
+<strong>Previous Visits:</strong>
+<span id="infoVisits"></span>
+</div>
+
+<div>
+<strong>Current Session:</strong>
+<span id="infoSession"></span>
+</div>
+
+</div>
+
+
+<div>
+
 <label>Visit Date *</label>
-<input id="date" type="date" required>
+
+<input
+id="date"
+type="date"
+required
+>
+
 </div>
 
-<div>
-<label>Session Number</label>
-<input id="session" readonly>
-</div>
 
 <div>
+
 <label>Treatment Fee *</label>
-<input id="fee" type="number" value="1000" required>
+
+<input
+id="fee"
+type="number"
+value="1000"
+required
+>
+
 </div>
 
+
 <div>
+
 <label>Payment Received</label>
-<input id="paid" type="number" value="0">
+
+<input
+id="paid"
+type="number"
+value="0"
+>
+
 </div>
 
+
 <div>
+
 <label>Payment Method</label>
+
 <select id="method">
+
 <option>Cash</option>
 <option>bKash</option>
 <option>Nagad</option>
 <option>Bank</option>
 <option>Other</option>
+
 </select>
+
 </div>
 
+
 <div class="full">
+
 <label>Treatment / Procedures</label>
-<textarea id="treatment" placeholder="Manual Therapy, Exercise Therapy, Electrotherapy..."></textarea>
+
+<textarea
+id="treatment"
+placeholder="Manual Therapy, Exercise Therapy, Electrotherapy..."
+></textarea>
+
 </div>
 
+
 <div class="full">
+
 <label>Clinical Notes</label>
-<textarea id="notes"></textarea>
+
+<textarea
+id="notes"
+placeholder="Clinical findings, response to treatment, advice..."
+></textarea>
+
 </div>
+
 
 <div class="full preview">
+
 <div>Current Due</div>
-<div class="big">৳<span id="due">0</span></div>
+
+<div class="big">
+৳<span id="due">0</span>
 </div>
 
-<div class="full">
-<button type="submit">✓ Save Visit</button>
 </div>
+
+
+<div class="full">
+
+<button type="submit">
+✓ Save Visit
+</button>
+
+</div>
+
 
 </form>
 
 </div>
 
+
 <div class="card">
+
 <h2>Recent Visits</h2>
 
 <div class="tableWrap">
+
 <table>
+
 <thead>
+
 <tr>
+
 <th>Date</th>
+
 <th>Patient</th>
-<th>Session</th>
+
 <th>Fee</th>
+
 <th>Paid</th>
+
 <th>Due</th>
+
 </tr>
+
 </thead>
+
+
 <tbody id="visitList"></tbody>
+
 </table>
+
 </div>
 
 </div>
+
 
 </main>
 
+
 <script>
 
-let patients=JSON.parse(localStorage.getItem("tushar_patients")||"[]");
-let visits=JSON.parse(localStorage.getItem("tushar_visits")||"[]");
+/* =========================
+   LOAD DATABASE
+========================= */
 
-const patient=document.getElementById("patient");
-const date=document.getElementById("date");
-const session=document.getElementById("session");
-const fee=document.getElementById("fee");
-const paid=document.getElementById("paid");
-const due=document.getElementById("due");
+let patients =
+JSON.parse(
+localStorage.getItem("tushar_patients") || "[]"
+);
 
-date.value=new Date().toISOString().split("T")[0];
+let visits =
+JSON.parse(
+localStorage.getItem("tushar_visits") || "[]"
+);
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const patient =
+document.getElementById("patient");
+
+const date =
+document.getElementById("date");
+
+const fee =
+document.getElementById("fee");
+
+const paid =
+document.getElementById("paid");
+
+const due =
+document.getElementById("due");
+
+const patientInfo =
+document.getElementById("patientInfo");
+
+
+/* =========================
+   DEFAULT DATE
+========================= */
+
+date.value =
+new Date()
+.toISOString()
+.split("T")[0];
+
+
+/* =========================
+   LOAD PATIENTS
+========================= */
 
 patients.forEach(p=>{
-patient.innerHTML+=`<option value="${p.id}">${p.id} — ${p.name} — ${p.phone}</option>`;
+
+patient.innerHTML += `
+
+<option value="${p.id}">
+${p.id} — ${p.name} — ${p.phone}
+</option>
+
+`;
+
 });
 
-function updateSession(){
 
-const id=patient.value;
+/* =========================
+   AUTOMATIC SESSION
+========================= */
+
+function getNextSession(patientId){
+
+const patientVisits =
+visits.filter(v =>
+v.patientId === patientId
+);
+
+if(!patientVisits.length){
+
+return 1;
+
+}
+
+
+/*
+Find the highest previous session
+instead of simply counting visits.
+*/
+
+const highestSession =
+Math.max(
+...patientVisits.map(v =>
+Number(v.session || 0)
+)
+);
+
+return highestSession + 1;
+
+}
+
+
+/* =========================
+   PATIENT SELECT
+========================= */
+
+patient.addEventListener("change",()=>{
+
+const id = patient.value;
 
 if(!id){
-session.value="";
+
+patientInfo.style.display="none";
+
 return;
-}
-
-const count=visits.filter(v=>v.patientId===id).length;
-
-session.value=count+1;
 
 }
+
+const p =
+patients.find(x=>x.id===id);
+
+if(!p){
+
+patientInfo.style.display="none";
+
+return;
+
+}
+
+const patientVisits =
+visits.filter(v =>
+v.patientId === id
+);
+
+const nextSession =
+getNextSession(id);
+
+
+/* Show patient information */
+
+document.getElementById("infoId")
+.textContent = p.id;
+
+document.getElementById("infoProblem")
+.textContent = p.problem || "-";
+
+document.getElementById("infoVisits")
+.textContent =
+patientVisits.length;
+
+document.getElementById("infoSession")
+.textContent =
+"Session " + nextSession;
+
+patientInfo.style.display="block";
+
+});
+
+
+/* =========================
+   CALCULATE DUE
+========================= */
 
 function calculate(){
 
-let f=Number(fee.value||0);
-let p=Number(paid.value||0);
+const f =
+Number(fee.value || 0);
 
-due.textContent=Math.max(0,f-p);
+const p =
+Number(paid.value || 0);
+
+due.textContent =
+Math.max(0,f-p);
 
 }
 
-patient.addEventListener("change",updateSession);
-fee.addEventListener("input",calculate);
-paid.addEventListener("input",calculate);
+fee.addEventListener(
+"input",
+calculate
+);
 
-document.getElementById("visitForm").addEventListener("submit",function(e){
+paid.addEventListener(
+"input",
+calculate
+);
+
+
+/* =========================
+   SAVE VISIT
+========================= */
+
+document
+.getElementById("visitForm")
+.addEventListener("submit",function(e){
 
 e.preventDefault();
 
-const p=patients.find(x=>x.id===patient.value);
+
+const p =
+patients.find(x =>
+x.id === patient.value
+);
+
 
 if(!p){
+
 alert("Please select a patient.");
+
 return;
+
 }
 
-let f=Number(fee.value||0);
-let newPaid=Number(paid.value||0);
 
 /*
-Advance balance is automatically used first.
+AUTOMATIC SESSION
 */
 
-let advance=Number(p.advance||0);
-let advanceUsed=Math.min(advance,f);
+const session =
+getNextSession(p.id);
 
-let remainingFee=f-advanceUsed;
 
-let cashPaid=Math.min(newPaid,remainingFee);
+const f =
+Number(fee.value || 0);
 
-let finalDue=Math.max(0,remainingFee-cashPaid);
+const newPaid =
+Number(paid.value || 0);
 
-p.advance=advance-advanceUsed;
 
-const visit={
-id:"V-"+Date.now(),
-patientId:p.id,
-patientName:p.name,
-session:Number(session.value),
-date:date.value,
-fee:f,
-advanceUsed:advanceUsed,
-paid:cashPaid,
-due:finalDue,
-method:document.getElementById("method").value,
-treatment:document.getElementById("treatment").value,
-notes:document.getElementById("notes").value,
-createdAt:new Date().toISOString()
+/*
+USE ADVANCE FIRST
+*/
+
+let advance =
+Number(p.advance || 0);
+
+let advanceUsed =
+Math.min(advance,f);
+
+let remainingFee =
+f - advanceUsed;
+
+let cashPaid =
+Math.min(
+newPaid,
+remainingFee
+);
+
+let finalDue =
+Math.max(
+0,
+remainingFee-cashPaid
+);
+
+
+/*
+UPDATE PATIENT ADVANCE
+*/
+
+p.advance =
+advance - advanceUsed;
+
+
+/*
+CREATE VISIT
+*/
+
+const visit = {
+
+id:
+"V-"+Date.now(),
+
+patientId:
+p.id,
+
+patientName:
+p.name,
+
+/*
+SESSION IS AUTOMATIC
+*/
+
+session:
+session,
+
+date:
+date.value,
+
+fee:
+f,
+
+advanceUsed:
+advanceUsed,
+
+paid:
+cashPaid,
+
+due:
+finalDue,
+
+method:
+document.getElementById("method").value,
+
+treatment:
+document.getElementById("treatment").value,
+
+notes:
+document.getElementById("notes").value,
+
+createdAt:
+new Date().toISOString()
+
 };
+
+
+/*
+SAVE
+*/
 
 visits.push(visit);
 
-localStorage.setItem("tushar_patients",JSON.stringify(patients));
-localStorage.setItem("tushar_visits",JSON.stringify(visits));
+localStorage.setItem(
+"tushar_patients",
+JSON.stringify(patients)
+);
+
+localStorage.setItem(
+"tushar_visits",
+JSON.stringify(visits)
+);
+
+
+/*
+SUCCESS
+*/
 
 alert(
+
 "Visit saved successfully!\n\n"+
 "Patient: "+p.name+
-"\nSession: "+visit.session+
+"\nSession: "+session+
 "\nFee: ৳"+f+
 "\nAdvance Used: ৳"+advanceUsed+
 "\nPaid: ৳"+cashPaid+
 "\nDue: ৳"+finalDue
+
 );
+
+
+/*
+RESET
+*/
 
 location.reload();
 
 });
 
+
+/* =========================
+   RECENT VISITS
+========================= */
+
 function render(){
 
-const list=document.getElementById("visitList");
+const list =
+document.getElementById("visitList");
 
 list.innerHTML="";
 
-visits.slice().reverse().slice(0,30).forEach(v=>{
 
-list.innerHTML+=`
+if(!visits.length){
+
+list.innerHTML = `
+
 <tr>
-<td>${v.date}</td>
-<td><b>${v.patientName}</b></td>
-<td>${v.session}</td>
-<td>৳${v.fee}</td>
-<td>৳${v.paid}</td>
-<td>৳${v.due}</td>
+
+<td
+colspan="5"
+class="empty"
+>
+No visits recorded yet.
+</td>
+
 </tr>
+
+`;
+
+return;
+
+}
+
+
+visits
+.slice()
+.reverse()
+.slice(0,30)
+.forEach(v=>{
+
+list.innerHTML += `
+
+<tr>
+
+<td>
+${v.date}
+</td>
+
+<td>
+<b>${v.patientName}</b>
+</td>
+
+<td>
+৳${v.fee}
+</td>
+
+<td>
+৳${v.paid}
+</td>
+
+<td>
+৳${v.due}
+</td>
+
+</tr>
+
 `;
 
 });
 
 }
 
+
+/* =========================
+   INITIALIZE
+========================= */
+
 render();
+
 calculate();
 
 </script>
