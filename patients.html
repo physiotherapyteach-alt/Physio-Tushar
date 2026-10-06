@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Patients | Tushar's Physiotherapy</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7fb;font-family:Arial;color:#172033}
+.sidebar{position:fixed;width:245px;height:100vh;background:#0b1f3a;color:white;padding:25px 15px}
+.logo{font-size:21px;font-weight:800;padding:0 12px 30px}
+.logo span{color:#38bdf8}
+.nav a{display:block;color:#cbd5e1;padding:13px 15px;margin:5px 0;border-radius:12px;text-decoration:none}
+.nav a:hover,.nav .active{background:#16365f;color:white}
+.main{margin-left:245px;padding:25px}
+.top{display:flex;justify-content:space-between;gap:15px;align-items:center}
+h1{margin-bottom:5px}
+.search{width:100%;max-width:500px;padding:14px;border:1px solid #dce3ec;border-radius:12px;margin:20px 0;font-size:15px}
+.card{background:white;padding:20px;border-radius:18px;box-shadow:0 7px 25px #153b6510;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th,td{padding:14px;border-bottom:1px solid #edf0f5;text-align:left}
+th{font-size:12px;color:#64748b}
+button{border:0;border-radius:9px;padding:8px 11px;cursor:pointer}
+.view{background:#e0f2fe;color:#0369a1}
+.edit{background:#f1f5f9}
+.add{background:#0ea5e9;color:white;padding:12px 16px;text-decoration:none;border-radius:11px;font-weight:bold}
+@media(max-width:700px){.sidebar{width:70px}.logo{font-size:0}.nav a{font-size:0;text-align:center}.main{margin-left:70px;padding:15px}.top{align-items:flex-start}.top h1{font-size:22px}.add{font-size:12px}}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+<div class="logo">Tushar's <span>Physio</span></div>
+<nav class="nav">
+<a href="index.html">🏠 Dashboard</a>
+<a class="active" href="patients.html">👥 Patients</a>
+<a href="new-patient.html">➕ New Patient</a>
+<a href="visits.html">🩺 Visits</a>
+<a href="finance.html">💰 Finance</a>
+<a href="reports.html">📊 Reports</a>
+</nav>
+</aside>
+
+<main class="main">
+
+<div class="top">
+<div>
+<h1>Patient Database</h1>
+<p>Manage all registered patients</p>
+</div>
+
+<a class="add" href="new-patient.html">+ New Patient</a>
+</div>
+
+<input class="search" id="search"
+placeholder="🔎 Search by name, phone, ID or diagnosis...">
+
+<div class="card">
+
+<table>
+<thead>
+<tr>
+<th>Patient ID</th>
+<th>Patient</th>
+<th>Phone</th>
+<th>Problem</th>
+<th>Visits</th>
+<th>Balance</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="list"></tbody>
+</table>
+
+</div>
+
+</main>
+
+<script>
+
+let patients=JSON.parse(localStorage.getItem("tushar_patients")||"[]");
+let visits=JSON.parse(localStorage.getItem("tushar_visits")||"[]");
+
+const list=document.getElementById("list");
+const search=document.getElementById("search");
+
+function render(){
+
+let q=search.value.toLowerCase();
+
+let filtered=patients.filter(p=>
+(p.name||"").toLowerCase().includes(q) ||
+(p.phone||"").toLowerCase().includes(q) ||
+(p.id||"").toLowerCase().includes(q) ||
+(p.problem||"").toLowerCase().includes(q)
+);
+
+list.innerHTML="";
+
+if(!filtered.length){
+list.innerHTML='<tr><td colspan="7">No patient found.</td></tr>';
+return;
+}
+
+filtered.forEach(p=>{
+
+const pv=visits.filter(v=>v.patientId===p.id);
+
+const totalDue=pv.reduce((s,v)=>s+Number(v.due||0),0);
+
+list.innerHTML+=`
+<tr>
+<td><b>${p.id}</b></td>
+<td><b>${p.name}</b><br><small>${p.age||""} ${p.gender||""}</small></td>
+<td>${p.phone||"-"}</td>
+<td>${p.problem||"-"}</td>
+<td>${pv.length}</td>
+<td>৳${totalDue}</td>
+<td>
+<button class="view" onclick="profile('${p.id}')">View</button>
+</td>
+</tr>`;
+});
+}
+
+function profile(id){
+
+const p=patients.find(x=>x.id===id);
+
+const pv=visits.filter(v=>v.patientId===id);
+
+let history=pv.map(v=>
+`Session ${v.session} — ${v.date} — Fee ৳${v.fee} — Paid ৳${v.paid} — Due ৳${v.due}`
+).join("\n");
+
+alert(
+"PATIENT PROFILE\n\n"+
+"ID: "+p.id+
+"\nName: "+p.name+
+"\nPhone: "+(p.phone||"-")+
+"\nAge: "+(p.age||"-")+
+"\nGender: "+(p.gender||"-")+
+"\nProblem: "+(p.problem||"-")+
+"\nAddress: "+(p.address||"-")+
+"\n\nVISIT HISTORY\n"+
+(history||"No visits yet.")
+);
+
+}
+
+search.addEventListener("input",render);
+render();
+
+</script>
+
+</body>
+</html>
