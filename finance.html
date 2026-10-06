@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Finance | Tushar's Physiotherapy</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7fb;font-family:Arial;color:#172033}
+.sidebar{position:fixed;width:245px;height:100vh;background:#0b1f3a;color:white;padding:25px 15px}
+.logo{font-size:21px;font-weight:800;padding:0 12px 30px}
+.logo span{color:#38bdf8}
+.nav a{display:block;color:#cbd5e1;padding:13px 15px;margin:5px 0;border-radius:12px;text-decoration:none}
+.nav a:hover,.nav .active{background:#16365f;color:white}
+.main{margin-left:245px;padding:25px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{background:white;border-radius:18px;padding:21px;box-shadow:0 7px 25px #153b6510}
+.label{color:#64748b;font-size:13px}
+.amount{font-size:27px;font-weight:800;margin-top:8px}
+.table{margin-top:20px;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:750px}
+th,td{padding:13px;border-bottom:1px solid #edf0f5;text-align:left}
+th{font-size:12px;color:#64748b}
+@media(max-width:900px){.sidebar{width:70px}.logo{font-size:0}.nav a{font-size:0;text-align:center}.main{margin-left:70px}.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.main{padding:15px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+<div class="logo">Tushar's <span>Physio</span></div>
+<nav class="nav">
+<a href="index.html">🏠 Dashboard</a>
+<a href="patients.html">👥 Patients</a>
+<a href="new-patient.html">➕ New Patient</a>
+<a href="visits.html">🩺 Visits</a>
+<a class="active" href="finance.html">💰 Finance</a>
+<a href="reports.html">📊 Reports</a>
+</nav>
+</aside>
+
+<main class="main">
+
+<h1>Finance</h1>
+<p>Track income, due and advance balance.</p>
+
+<div class="grid">
+
+<div class="card">
+<div class="label">Total Treatment Fee</div>
+<div class="amount">৳<span id="fee">0</span></div>
+</div>
+
+<div class="card">
+<div class="label">Total Collected</div>
+<div class="amount">৳<span id="paid">0</span></div>
+</div>
+
+<div class="card">
+<div class="label">Total Due</div>
+<div class="amount">৳<span id="due">0</span></div>
+</div>
+
+<div class="card">
+<div class="label">Current Advance</div>
+<div class="amount">৳<span id="advance">0</span></div>
+</div>
+
+</div>
+
+<div class="card table">
+
+<h2>Payment / Visit Ledger</h2>
+
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Patient</th>
+<th>Session</th>
+<th>Fee</th>
+<th>Advance Used</th>
+<th>Paid</th>
+<th>Due</th>
+</tr>
+</thead>
+
+<tbody id="ledger"></tbody>
+
+</table>
+
+</div>
+
+</main>
+
+<script>
+
+const patients=JSON.parse(localStorage.getItem("tushar_patients")||"[]");
+const visits=JSON.parse(localStorage.getItem("tushar_visits")||"[]");
+
+const sum=(arr,key)=>
+arr.reduce((s,x)=>s+Number(x[key]||0),0);
+
+document.getElementById("fee").textContent=sum(visits,"fee");
+document.getElementById("paid").textContent=sum(visits,"paid");
+document.getElementById("due").textContent=sum(visits,"due");
+document.getElementById("advance").textContent=
+sum(patients,"advance");
+
+const ledger=document.getElementById("ledger");
+
+visits.slice().reverse().forEach(v=>{
+
+ledger.innerHTML+=`
+<tr>
+<td>${v.date}</td>
+<td><b>${v.patientName}</b></td>
+<td>${v.session}</td>
+<td>৳${v.fee}</td>
+<td>৳${v.advanceUsed||0}</td>
+<td>৳${v.paid}</td>
+<td>৳${v.due}</td>
+</tr>
+`;
+
+});
+
+</script>
+
+</body>
+</html>
