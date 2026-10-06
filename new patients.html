@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>New Patient | Tushar's Physiotherapy</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7fb;font-family:Arial;color:#172033}
+.sidebar{position:fixed;width:245px;height:100vh;background:#0b1f3a;color:white;padding:25px 15px}
+.logo{font-size:21px;font-weight:800;padding:0 12px 30px}
+.logo span{color:#38bdf8}
+.nav a{display:block;color:#cbd5e1;padding:13px 15px;margin:5px 0;border-radius:12px;text-decoration:none}
+.nav a:hover,.nav .active{background:#16365f;color:white}
+.main{margin-left:245px;padding:25px;max-width:1100px}
+.card{background:white;border-radius:20px;padding:25px;box-shadow:0 7px 25px #153b6510}
+h1{margin-bottom:5px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.full{grid-column:1/-1}
+label{font-size:13px;font-weight:bold;display:block;margin-bottom:7px}
+input,select,textarea{width:100%;padding:13px;border:1px solid #dbe3ec;border-radius:11px;font-size:15px}
+textarea{min-height:100px;resize:vertical}
+button{background:#0ea5e9;color:white;border:0;border-radius:11px;padding:14px 20px;font-weight:bold;font-size:15px;cursor:pointer}
+.notice{background:#eff6ff;color:#075985;padding:13px;border-radius:12px;margin-bottom:20px}
+@media(max-width:700px){.sidebar{width:70px}.logo{font-size:0}.nav a{font-size:0;text-align:center}.main{margin-left:70px;padding:15px}.form{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+<div class="logo">Tushar's <span>Physio</span></div>
+<nav class="nav">
+<a href="index.html">🏠 Dashboard</a>
+<a href="patients.html">👥 Patients</a>
+<a class="active" href="new-patient.html">➕ New Patient</a>
+<a href="visits.html">🩺 Visits</a>
+<a href="finance.html">💰 Finance</a>
+<a href="reports.html">📊 Reports</a>
+</nav>
+</aside>
+
+<main class="main">
+
+<h1>Register New Patient</h1>
+<p>Add a new patient to your physiotherapy database.</p>
+
+<div class="card">
+
+<div class="notice">
+🆔 Patient ID will be generated automatically.
+</div>
+
+<form id="form">
+
+<div>
+<label>Patient Name *</label>
+<input id="name" required>
+</div>
+
+<div>
+<label>Phone Number *</label>
+<input id="phone" required>
+</div>
+
+<div>
+<label>Age</label>
+<input id="age" type="number">
+</div>
+
+<div>
+<label>Gender</label>
+<select id="gender">
+<option value="">Select</option>
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+</select>
+</div>
+
+<div>
+<label>Doctor / Referral</label>
+<input id="doctor">
+</div>
+
+<div>
+<label>Initial Advance Payment</label>
+<input id="advance" type="number" value="0">
+</div>
+
+<div class="full">
+<label>Address</label>
+<input id="address">
+</div>
+
+<div class="full">
+<label>Problem / Diagnosis *</label>
+<input id="problem" required placeholder="e.g. Low Back Pain, Knee OA">
+</div>
+
+<div class="full">
+<label>Clinical Notes</label>
+<textarea id="notes"></textarea>
+</div>
+
+<div class="full">
+<button type="submit">✓ Save Patient</button>
+</div>
+
+</form>
+
+</div>
+</main>
+
+<script>
+
+document.getElementById("form").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+let patients=JSON.parse(localStorage.getItem("tushar_patients")||"[]");
+
+const id="PT-"+String(patients.length+1).padStart(4,"0");
+
+const patient={
+id:id,
+name:document.getElementById("name").value.trim(),
+phone:document.getElementById("phone").value.trim(),
+age:document.getElementById("age").value,
+gender:document.getElementById("gender").value,
+doctor:document.getElementById("doctor").value.trim(),
+address:document.getElementById("address").value.trim(),
+problem:document.getElementById("problem").value.trim(),
+notes:document.getElementById("notes").value.trim(),
+advance:Number(document.getElementById("advance").value||0),
+createdAt:new Date().toISOString()
+};
+
+patients.push(patient);
+
+localStorage.setItem("tushar_patients",JSON.stringify(patients));
+
+alert("Patient saved successfully!\n\nPatient ID: "+id);
+
+location.href="patients.html";
+
+});
+
+</script>
+
+</body>
+</html>
